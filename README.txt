@@ -1,3 +1,6 @@
+This module is a PORT-IN-PROGRESS. We are using it for a specific site, but
+it has not yet been properly tested and the port is not yet complete.
+
 1) Overview
 
 This module provide a solution to add Domain Access on entity.
