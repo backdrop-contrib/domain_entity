@@ -1,3 +1,15 @@
+Domain
+========
+<!--
+|<- - - - - - - This line is exactly 80 characters for reference - - - - - - ->|
+-->
+WORK IN PROGRESS - this module is very buggy, please do not use on production
+sites. However, please DO test this module, report bugs, and submit PRs. 
+
+
+Taken from Drupal README
+========================
+
 This module is a PORT-IN-PROGRESS. We are using it for a specific site, but
 it has not yet been properly tested and the port is not yet complete.
 
@@ -36,14 +48,12 @@ on the field that hold the domain(s) entity.
 For administration views you can expose to Editors 
 the filter of the domain field of your entity
 
-
 2) Features
 
 - Enable Domain Access on entities
 - UI for enabling domain access on entity type, 
   and batch update of existing entities
 - views integration
-
 
 3) Requirements
 
@@ -52,7 +62,6 @@ the filter of the domain field of your entity
 
   Extra requirements:
 - To expose domain filter in views: domain views
-
 
 5) Setup
 
@@ -74,3 +83,47 @@ the filter of the domain field of your entity
 	  "access entities affiliate on assigned domains"
     - Assign the user to the domain(s) he can access 
 	  ("Affiliate editor options" in admin/people)
+
+Installation
+------------
+- Install this module using the official Backdrop CMS instructions at
+  https://docs.backdropcms.org/documentation/extend-with-modules.
+- TBC
+
+Issues
+------
+Bugs and Feature Requests should be reported in the Issue Queue:
+https://github.com/backdrop-contrib/domain/issues.
+
+Documentation
+-------------------
+Please, do help us create documentation for this module. 
+https://github.com/backdrop-contrib/domain/wiki
+
+Current Maintainers
+-------------------
+
+- [Tim Erickson](https://github.com/stpaultim) - [Simplo by Triplo](https://simplo.site/)
+- Collaboration and co-maintainers welcome! REALLY, REALLY WELCOME!!
+
+Credits
+-------
+
+Port to Backdrop CMS by:
+- [Tim Erickson](https://github.com/stpaultim) - [Simplo by Triplo](https://simplo.site/)
+- Could you help? Help is needed to document issues, work on fixes and to test fixes.
+
+Drupal maintainers:
+- [Ken Rickard (agentrickard)](https://www.drupal.org/u/agentrickard)
+- [Katrin Valdre (nonsie)](https://www.drupal.org/u/nonsie)
+
+Drupal development sponsored by [Palantir.net](https://palantir.net/)
+
+Created for Drupal by [Gurpartap Singh](https://www.drupal.org/u/gurpartap-singh)
+
+License
+-------
+
+This project is GPL v2 software.
+See the LICENSE.txt file in this directory for complete text.
+
