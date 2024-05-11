@@ -1,0 +1,6 @@
+{
+    "_config_name": "domain_entity.settings",
+    "domain_entity_bypass_access_conditions": false,
+    "domain_entity_allowed_entity_types": [],
+    "domain_entity_bypass_access_conditions_backup": false
+}

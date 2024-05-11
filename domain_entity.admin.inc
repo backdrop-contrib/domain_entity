@@ -36,7 +36,7 @@ function domain_entity_ui($form, &$form_state) {
     '#title' => t('Disable access rules from this module. (You can use this settings to disable the query alter, for troubleshooting)'),
     '#type' => 'checkbox',
     '#description' => t('When this checkbox is checked, your entities must be accessible on all domains'),
-    '#default_value' => variable_get('domain_entity_bypass_access_conditions', FALSE),
+    '#default_value' => config_get('domain_entity.settings', 'domain_entity_bypass_access_conditions'),
     '#weight' => 3,
   );
   $domain_entity_options = array(
@@ -49,7 +49,10 @@ function domain_entity_ui($form, &$form_state) {
   );
   // Construct widget default values options:
   $site_domains = domain_domains();
-  $checkboxes = array(DOMAIN_ACTIVE => t('Current domain'), DOMAIN_ALL => t('Send to all affiliates'));
+  $checkboxes = array(
+    DOMAIN_ACTIVE => t('Current domain'),
+    DOMAIN_ALL => t('Send to all affiliates'),
+  );
   foreach ($site_domains as $site_domain) {
     $checkboxes[$site_domain['domain_id']] = $site_domain['sitename'];
   }
@@ -83,14 +86,14 @@ function domain_entity_ui($form, &$form_state) {
         '#title' => t("Choose which behavior must be used with the bundle @bundle_label ('@bundle_name')", array('@bundle_label' => $bundle_info['label'], '@bundle_name' => $bundle_name)),
         '#type' => 'select',
         '#options' => $domain_entity_options,
-        '#default_value' => (isset($default_values[$entity_name]) && isset($default_values[$entity_name][$bundle_name])) ? array(key($default_values[$entity_name][$bundle_name]) => key($default_values[$entity_name][$bundle_name])) : array(DOMAIN_ENTITY_BEHAVIOR_USER => DOMAIN_ENTITY_BEHAVIOR_USER),
+        '#default_value' => (isset($default_values[$entity_name]) && isset($default_values[$entity_name][$bundle_name]))?array(key($default_values[$entity_name][$bundle_name]) => key($default_values[$entity_name][$bundle_name])) : array(DOMAIN_ENTITY_BEHAVIOR_USER => DOMAIN_ENTITY_BEHAVIOR_USER),
       );
       // Add a checkboxes for domain id's:
       $form['entities'][$entity_name]['bundles'][$entity_name . '_' . $bundle_name . '_default_values'] = array(
         '#type' => 'checkboxes',
         '#options' => $checkboxes,
         '#title' => t("default domain value(s) for the bundle: @bundle_label ('@bundle_name')", array('@bundle_label' => $bundle_info['label'], '@bundle_name' => $bundle_name)),
-        '#default_value' => (isset($default_values[$entity_name]) && isset($default_values[$entity_name][$bundle_name])) ? reset($default_values[$entity_name][$bundle_name]) : array(DOMAIN_ACTIVE => DOMAIN_ACTIVE),
+        '#default_value' => (isset($default_values[$entity_name]) && isset($default_values[$entity_name][$bundle_name]))?reset($default_values[$entity_name][$bundle_name]) : array(DOMAIN_ACTIVE => DOMAIN_ACTIVE),
         '#required' => TRUE,
         '#suffix' => '</div></fieldset>',
         '#ajax' => array(
@@ -136,7 +139,7 @@ function domain_entity_ui($form, &$form_state) {
         $query->entityCondition('entity_type', $entity_name);
         if ($query->execute()) {
           $form['entities'][$entity_name][$entity_name . '_value']['#description']
-            = '<div id="edit-changed" class="view-changed messages warning form-wrapper">' .
+           = '<div id="edit-changed" class="view-changed messages warning form-wrapper">' .
            t('* Beware you have entities of this type in your database, all unassigned entities will be assigned to the choosen default domain value(s), if you select "current domain" the unassigned entities will be assigned to the current domain. You can change the default value afterway without altering the existing entities domain value(s).') .
            '</div>';
         }
@@ -194,10 +197,10 @@ function domain_entity_ui_form_ajax_callback($form, &$form_state) {
  */
 function domain_entity_ui_submit($form, &$form_state) {
   $values = $form_state['values'];
-  $old_domain_entity_allowed_entity_types = variable_get('domain_entity_allowed_entity_types', array());
+  $old_domain_entity_allowed_entity_types = config_get('domain_entity.settings', 'domain_entity_allowed_entity_types');
 
   // Save the disable access conditions value.
-  variable_set('domain_entity_bypass_access_conditions', $values['domain_entity_bypass_access_conditions']);
+  config_set('domain_entity.settings', 'domain_entity_bypass_access_conditions', $values['domain_entity_bypass_access_conditions']);
 
   // Do not allow domain access on entity that are actually bundle.
   $entities_info = entity_get_info();
@@ -237,7 +240,7 @@ function domain_entity_ui_submit($form, &$form_state) {
         if (in_array($entity_name, array_keys($old_domain_entity_allowed_entity_types))) {
           foreach ($domain_entity_allowed_entity_types[$entity_name] as $bundle_name => $bundle_info) {
             if (isset($old_domain_entity_allowed_entity_types[$entity_name][$bundle_name]) &&
-              key($bundle_info) != key($old_domain_entity_allowed_entity_types[$entity_name][$bundle_name])) {
+          	    key($bundle_info) != key($old_domain_entity_allowed_entity_types[$entity_name][$bundle_name])) {
               $field_name = domain_entity_get_entity_field_name($entity_name);
               $instance = field_read_instance($entity_name, $field_name, $bundle_name);
               $instance['widget']['type'] = key($bundle_info);
@@ -257,13 +260,13 @@ function domain_entity_ui_submit($form, &$form_state) {
         foreach ($old_domain_entity_allowed_entity_types[$uninstall_entity_type] as $bundle_name => $data) {
           $instance = field_info_instance($uninstall_entity_type, $field_name, $bundle_name);
           field_delete_instance($instance, TRUE);
-          drupal_set_message(t('Domain access has been disabled on %entity_name', array('%entity_name' => $uninstall_entity_type)));
+          backdrop_set_message(t('Domain access has been disabled on %entity_name', array('%entity_name' => $uninstall_entity_type)));
         }
       }
       field_delete_field($field_name);
     }
   }
-  variable_set('domain_entity_allowed_entity_types', $domain_entity_allowed_entity_types);
+  config_set('domain_entity.settings', 'domain_entity_allowed_entity_types', $domain_entity_allowed_entity_types);
   domain_entity_types_enable_domain_field($domain_entity_allowed_entity_types);
-  drupal_set_message(t('Domain entity settings updated'));
+  backdrop_set_message(t('Domain entity settings updated'));
 }
