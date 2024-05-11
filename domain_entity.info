@@ -1,10 +1,10 @@
 name = Domain Access Entity
 description = Defines Domain access for entities
 package = Domain Access (contrib)
-core = 7.x
+backdrop = 1.x
+type = module
 configure = admin/structure/domain/entities
 
 dependencies[] = domain
 dependencies[] = entity
 
-files[] = includes/domain_entity_views_handler_filter_domain_domain_id.inc
