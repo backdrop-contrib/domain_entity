@@ -3,15 +3,15 @@ Domain Entity
 <!--
 |<- - - - - - - This line is exactly 80 characters for reference - - - - - - ->|
 -->
-WORK IN PROGRESS - this module is very buggy, please do not use on production
-sites. However, please DO test this module, report bugs, and submit PRs. 
+We started this port and then realized that we did not need it and don't have an
+easy way to test it. If you are interested in this module and wish to resume the
+port, please contact us. 
 
 
 Taken from Drupal README
 ========================
 
-This module is a PORT-IN-PROGRESS. We are using it for a specific site, but
-it has not yet been properly tested and the port is not yet complete.
+This module is a PORT-IN-PROGRESS.
 
 1) Overview
 
